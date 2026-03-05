@@ -1,43 +1,18 @@
 package com.narxoz.rpg.hw2.loot;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public final class FireLootTable implements LootTable {
-    private final List<String> items;
-    private final int goldDrop;
-    private final int experienceDrop;
-
-    public FireLootTable() {
-        this.items = List.of("Fire Gem", "Dragon Scale", "Flame Rune");
-        this.goldDrop = 300;
-        this.experienceDrop = 800;
-    }
-
-    private FireLootTable(List<String> items, int goldDrop, int experienceDrop) {
-        this.items = new ArrayList<>(items);
-        this.goldDrop = goldDrop;
-        this.experienceDrop = experienceDrop;
-    }
+    @Override public String getName() { return "Fire Loot"; }
 
     @Override
-    public List<String> getItems() {
-        return Collections.unmodifiableList(items);
-    }
-
-    @Override
-    public int getGoldDrop() {
-        return goldDrop;
-    }
-
-    @Override
-    public int getExperienceDrop() {
-        return experienceDrop;
-    }
-
-    @Override
-    public LootTable clone() {
-        return new FireLootTable(items, goldDrop, experienceDrop);
+    public List<String> roll(Random random) {
+        List<String> items = new ArrayList<>();
+        items.add("Charred Scale");
+        if (random.nextInt(100) < 40) items.add("Flame Gem");
+        if (random.nextInt(100) < 15) items.add("Molten Core");
+        return items;
     }
 }

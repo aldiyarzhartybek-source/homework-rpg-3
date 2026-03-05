@@ -1,20 +1,7 @@
 package com.narxoz.rpg.hw2.combat;
 
 public final class FireShield implements Ability {
-
-    @Override public String getName() {
-        return "Fire Shield";
-    }
-
-    @Override public int getDamage() {
-        return 0;
-    }
-
-    @Override public String getDescription() {
-        return "Defensive buff, reduces incoming damage with fire aura.";
-    }
-
-    @Override public Ability clone() {
-        return new FireShield();
-    }
+    @Override public String getName() { return "Fire Shield"; }
+    @Override public int getAttackBonus() { return 0; }
+    @Override public int getDefenseBonus() { return 4; }
 }

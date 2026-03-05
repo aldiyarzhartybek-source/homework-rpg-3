@@ -1,109 +1,69 @@
 package com.narxoz.rpg.hw2.builder;
 
-import com.narxoz.rpg.combat.Ability;
-import com.narxoz.rpg.enemy.Enemy;
-import com.narxoz.rpg.enemy.Goblin;
-import com.narxoz.rpg.loot.LootTable;
+import com.narxoz.rpg.hw2.ai.AIBehavior;
+import com.narxoz.rpg.hw2.ai.TricksterAI;
+import com.narxoz.rpg.hw2.combat.Ability;
+import com.narxoz.rpg.hw2.enemy.Enemy;
+import com.narxoz.rpg.hw2.enemy.Goblin;
+import com.narxoz.rpg.hw2.loot.LootTable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public final class BasicEnemyBuilder implements EnemyBuilder {
+
     private String name;
-    private Integer health;
-
-    private int damage = 15;
-    private int defense = 5;
-    private int speed = 35;
-
-    private String element = "NONE";
-    private String aiBehavior = "BASIC";
-
+    private String element;
+    private int health;
+    private int damage;
+    private int defense;
+    private int speed;
     private final List<Ability> abilities = new ArrayList<>();
     private LootTable lootTable;
+    private AIBehavior aiBehavior;
+
+    public BasicEnemyBuilder() {
+        reset();
+    }
 
     @Override
-    public EnemyBuilder reset() {
-        name = null;
-        health = null;
-        damage = 15;
-        defense = 5;
-        speed = 35;
-        element = "NONE";
-        aiBehavior = "BASIC";
+    public void reset() {
+        name = "Goblin";
+        element = "Neutral";
+        health = 90;
+        damage = 14;
+        defense = 3;
+        speed = 14;
         abilities.clear();
         lootTable = null;
-        return this;
+        aiBehavior = new TricksterAI();
     }
 
-    @Override public EnemyBuilder setName(String name) {
-        this.name = name; return this;
-    }
+    @Override public void setName(String name) { this.name = name; }
+    @Override public void setElement(String element) { this.element = element; }
 
-    @Override public EnemyBuilder setHealth(int health) {
-        this.health = health; return this;
-    }
-
-    @Override public EnemyBuilder setDamage(int damage) {
-        this.damage = damage; return this;
-    }
-
-    @Override public EnemyBuilder setDefense(int defense) {
-        this.defense = defense; return this;
-    }
-
-    @Override public EnemyBuilder setSpeed(int speed) {
-        this.speed = speed; return this;
-    }
-
-    @Override public EnemyBuilder setElement(String element) {
-        this.element = element; return this;
+    @Override
+    public void setBaseStats(int health, int damage, int defense, int speed) {
+        this.health = health;
+        this.damage = damage;
+        this.defense = defense;
+        this.speed = speed;
     }
 
     @Override
-    public EnemyBuilder addAbility(Ability ability) {
+    public void addAbility(Ability ability) {
         if (ability != null) abilities.add(ability);
-        return this;
     }
 
-    @Override
-    public EnemyBuilder setAbilities(List<Ability> abilities) {
-        this.abilities.clear();
-        if (abilities != null) this.abilities.addAll(abilities);
-        return this;
-    }
+    @Override public void setLootTable(LootTable lootTable) { this.lootTable = lootTable; }
 
     @Override
-    public EnemyBuilder addPhase(int phaseNumber, int healthThreshold) {
-        return this;
-    }
-
-    @Override
-    public EnemyBuilder setLootTable(LootTable loot) {
-        this.lootTable = loot;
-        return this;
-    }
-
-    @Override
-    public EnemyBuilder setAI(String aiBehavior) {
-        this.aiBehavior = aiBehavior;
-        return this;
+    public void setAIBehavior(AIBehavior aiBehavior) {
+        if (aiBehavior != null) this.aiBehavior = aiBehavior;
     }
 
     @Override
     public Enemy build() {
-
-        if (name == null || name.isBlank())
-            throw new IllegalStateException("Name is required!");
-        if (health == null || health <= 0)
-            throw new IllegalStateException("Health must be positive!");
-
-        Goblin goblin = new Goblin(name, health, damage, defense, speed);
-        goblin.setElement(element);
-        goblin.setAIBehavior(aiBehavior);
-        goblin.setLootTable(lootTable);
-
-        for (Ability a : abilities) goblin.addAbility(a);
-        return goblin;
+        return new Goblin(name, element, health, damage, defense, speed, abilities, lootTable, aiBehavior);
     }
 }

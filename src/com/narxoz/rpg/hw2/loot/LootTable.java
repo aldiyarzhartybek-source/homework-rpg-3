@@ -1,10 +1,9 @@
 package com.narxoz.rpg.hw2.loot;
 
 import java.util.List;
+import java.util.Random;
 
 public interface LootTable {
-    List<String> getItems();
-    int getGoldDrop();
-    int getExperienceDrop();
-    LootTable clone();
+    String getName();
+    List<String> roll(Random random);
 }

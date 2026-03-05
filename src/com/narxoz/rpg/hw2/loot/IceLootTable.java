@@ -1,43 +1,18 @@
 package com.narxoz.rpg.hw2.loot;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public final class IceLootTable implements LootTable {
-    private final List<String> items;
-    private final int goldDrop;
-    private final int experienceDrop;
-
-    public IceLootTable() {
-        this.items = List.of("Ice Gem", "Frost Scale", "Ice Rune");
-        this.goldDrop = 260;
-        this.experienceDrop = 780;
-    }
-
-    private IceLootTable(List<String> items, int goldDrop, int experienceDrop) {
-        this.items = new ArrayList<>(items);
-        this.goldDrop = goldDrop;
-        this.experienceDrop = experienceDrop;
-    }
+    @Override public String getName() { return "Ice Loot"; }
 
     @Override
-    public List<String> getItems() {
-        return Collections.unmodifiableList(items);
-    }
-
-    @Override
-    public int getGoldDrop() {
-        return goldDrop;
-    }
-
-    @Override
-    public int getExperienceDrop() {
-        return experienceDrop;
-    }
-
-    @Override
-    public LootTable clone() {
-        return new IceLootTable(items, goldDrop, experienceDrop);
+    public List<String> roll(Random random) {
+        List<String> items = new ArrayList<>();
+        items.add("Frozen Fang");
+        if (random.nextInt(100) < 40) items.add("Ice Crystal");
+        if (random.nextInt(100) < 15) items.add("Glacier Heart");
+        return items;
     }
 }

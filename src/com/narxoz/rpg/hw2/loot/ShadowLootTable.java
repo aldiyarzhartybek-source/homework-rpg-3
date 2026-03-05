@@ -1,43 +1,18 @@
 package com.narxoz.rpg.hw2.loot;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public final class ShadowLootTable implements LootTable {
-    private final List<String> items;
-    private final int goldDrop;
-    private final int experienceDrop;
-
-    public ShadowLootTable() {
-        this.items = List.of("Shadow Gem", "Dark Essence", "Shadow Rune");
-        this.goldDrop = 350;
-        this.experienceDrop = 900;
-    }
-
-    private ShadowLootTable(List<String> items, int goldDrop, int experienceDrop) {
-        this.items = new ArrayList<>(items);
-        this.goldDrop = goldDrop;
-        this.experienceDrop = experienceDrop;
-    }
+    @Override public String getName() { return "Shadow Loot"; }
 
     @Override
-    public List<String> getItems() {
-        return Collections.unmodifiableList(items);
-    }
-
-    @Override
-    public int getGoldDrop() {
-        return goldDrop;
-    }
-
-    @Override
-    public int getExperienceDrop() {
-        return experienceDrop;
-    }
-
-    @Override
-    public LootTable clone() {
-        return new ShadowLootTable(items, goldDrop, experienceDrop);
+    public List<String> roll(Random random) {
+        List<String> items = new ArrayList<>();
+        items.add("Dark Cloth");
+        if (random.nextInt(100) < 40) items.add("Shadow Essence");
+        if (random.nextInt(100) < 15) items.add("Night Shard");
+        return items;
     }
 }

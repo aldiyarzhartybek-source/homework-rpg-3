@@ -2,35 +2,22 @@ package com.narxoz.rpg.hw2.prototype;
 
 import com.narxoz.rpg.hw2.enemy.Enemy;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public final class EnemyRegistry {
 
-    private final Map<String, Enemy> templates = new HashMap<>();
+    private final Map<String, Enemy> prototypes = new HashMap<>();
 
-    public void registerTemplate(String key, Enemy template) {
-        if (key == null || key.isBlank()) {
-            throw new IllegalArgumentException("Template key must not be empty");
-        }
-        if (template == null) {
-            throw new IllegalArgumentException("Template must not be null");
-        }
-        templates.put(key, template);
+    public void register(String key, Enemy enemy) {
+        if (key == null || key.isEmpty()) throw new IllegalArgumentException("key");
+        if (enemy == null) throw new IllegalArgumentException("enemy");
+        prototypes.put(key, enemy);
     }
 
-    public Enemy createFromTemplate(String key) {
-        Enemy template = templates.get(key);
-        if (template == null) {
-            throw new IllegalArgumentException("No template registered with key: " + key);
-        }
-        
-        return template.clone();
-    }
-
-    public Set<String> listTemplates() {
-        return Collections.unmodifiableSet(templates.keySet());
+    public Enemy create(String key) {
+        Enemy proto = prototypes.get(key);
+        if (proto == null) throw new IllegalArgumentException("Unknown prototype: " + key);
+        return proto.copy();
     }
 }

@@ -1,21 +1,7 @@
 package com.narxoz.rpg.hw2.combat;
 
 public final class IceShield implements Ability {
-
-    @Override public String getName() {
-        return "Ice Shield";
-    }
-
-    @Override public int getDamage() {
-        return 0;
-    }
-
-    @Override public String getDescription() {
-        return "Defensive buff, increases defense with ice armor.";
-    }
-
-    @Override public Ability clone() {
-        return new IceShield();
-    }
-
+    @Override public String getName() { return "Ice Shield"; }
+    @Override public int getAttackBonus() { return 0; }
+    @Override public int getDefenseBonus() { return 5; }
 }
