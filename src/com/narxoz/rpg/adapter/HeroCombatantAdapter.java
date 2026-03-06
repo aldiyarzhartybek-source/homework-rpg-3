@@ -1,12 +1,12 @@
 package com.narxoz.rpg.adapter;
 
 import com.narxoz.rpg.battle.Combatant;
-import com.narxoz.rpg.hero.Hero;
+import com.narxoz.rpg.hw1.character.Character;
 
 public class HeroCombatantAdapter implements Combatant {
-    private final Hero hero;
+    private final Character hero;
 
-    public HeroCombatantAdapter(Hero hero) {
+    public HeroCombatantAdapter(Character hero) {
         this.hero = hero;
     }
 
@@ -17,13 +17,12 @@ public class HeroCombatantAdapter implements Combatant {
 
     @Override
     public int getAttackPower() {
-        // TODO: translate hero power to combat attack
-        return hero.getPower();
+        return hero.getAttackPower();
     }
 
     @Override
     public void takeDamage(int amount) {
-        hero.receiveDamage(amount);
+        hero.takeDamage(amount);
     }
 
     @Override

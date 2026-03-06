@@ -72,4 +72,20 @@ public class Warrior implements Character {
                 + "Armor: " + armorInfo + "\n"
                 + "Special Ability: " + useSpecialAbility() + "\n";
     }
+
+    @Override
+    public int getAttackPower() {
+        return strength;
+    }
+
+    @Override
+    public void takeDamage(int damage) {
+        int finalDamage = Math.max(0, damage);
+        health = Math.max(0, health - finalDamage);
+    }
+
+    @Override
+    public boolean isAlive() {
+        return health > 0;
+    }
 }

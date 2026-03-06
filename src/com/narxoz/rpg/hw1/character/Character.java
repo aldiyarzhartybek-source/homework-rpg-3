@@ -15,4 +15,8 @@ public interface Character {
 
     String getStats();
     String useSpecialAbility();
+
+    int getAttackPower();
+    void takeDamage(int damage);
+    boolean isAlive();
 }
