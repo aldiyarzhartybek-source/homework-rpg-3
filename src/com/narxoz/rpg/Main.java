@@ -4,47 +4,77 @@ import com.narxoz.rpg.adapter.EnemyCombatantAdapter;
 import com.narxoz.rpg.adapter.HeroCombatantAdapter;
 import com.narxoz.rpg.battle.BattleEngine;
 import com.narxoz.rpg.battle.Combatant;
-import com.narxoz.rpg.battle.EncounterResult;
-import com.narxoz.rpg.enemy.Goblin;
-import com.narxoz.rpg.hero.Mage;
-import com.narxoz.rpg.hero.Warrior;
+import com.narxoz.rpg.hw1.character.Archer;
+import com.narxoz.rpg.hw1.character.Character;
+import com.narxoz.rpg.hw1.character.Mage;
+import com.narxoz.rpg.hw1.character.Warrior;
+import com.narxoz.rpg.hw2.ai.AIBehavior;
+import com.narxoz.rpg.hw2.combat.Ability;
+import com.narxoz.rpg.hw2.enemy.DragonBoss;
+import com.narxoz.rpg.hw2.enemy.Enemy;
+import com.narxoz.rpg.hw2.enemy.Goblin;
+import com.narxoz.rpg.hw2.loot.LootTable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("=== RPG Battle Engine Demo ===\n");
+        Character warrior = new Warrior("Thorin");
+        Character mage = new Mage("Merlin");
+        Character archer = new Archer("Legolas");
 
-        // TODO: Create heroes and enemies
-        Warrior warrior = new Warrior("Arthas");
-        Mage mage = new Mage("Jaina");
-        Goblin goblin = new Goblin();
+        List<Ability> goblinAbilities = new ArrayList<>();
+        List<Ability> dragonAbilities = new ArrayList<>();
 
-        // TODO: Wrap with adapters
-        List<Combatant> heroes = new ArrayList<>();
-        heroes.add(new HeroCombatantAdapter(warrior));
-        heroes.add(new HeroCombatantAdapter(mage));
+        LootTable goblinLoot = null;
+        LootTable dragonLoot = null;
+        AIBehavior goblinAI = null;
+        AIBehavior dragonAI = null;
 
-        List<Combatant> enemies = new ArrayList<>();
-        enemies.add(new EnemyCombatantAdapter(goblin));
+        Enemy goblin = new Goblin(
+                "Grimtooth",
+                "Earth",
+                100,
+                20,
+                10,
+                15,
+                goblinAbilities,
+                goblinLoot,
+                goblinAI
+        );
 
-        // TODO: Demonstrate Singleton behavior
-        BattleEngine engineA = BattleEngine.getInstance();
-        BattleEngine engineB = BattleEngine.getInstance();
-        System.out.println("Same instance? " + (engineA == engineB));
-        System.out.println();
+        Enemy dragon = new DragonBoss(
+                "Smolderfang",
+                "Fire",
+                250,
+                35,
+                20,
+                10,
+                dragonAbilities,
+                dragonLoot,
+                dragonAI
+        );
 
-        // TODO: Run battle and print summary
-        engineA.setRandomSeed(42L);
-        EncounterResult result = engineA.runEncounter(heroes, enemies);
+        Enemy goblinCopy = goblin.copy();
 
-        System.out.println("Winner: " + result.getWinner());
-        System.out.println("Rounds: " + result.getRounds());
-        for (String line : result.getBattleLog()) {
-            System.out.println(line);
-        }
+        Combatant hero1 = new HeroCombatantAdapter(warrior);
+        Combatant hero2 = new HeroCombatantAdapter(mage);
+        Combatant hero3 = new HeroCombatantAdapter(archer);
 
-        System.out.println("\n=== Demo Complete ===");
+        Combatant enemy1 = new EnemyCombatantAdapter(goblin);
+        Combatant enemy2 = new EnemyCombatantAdapter(dragon);
+        Combatant enemy3 = new EnemyCombatantAdapter(goblinCopy);
+
+        BattleEngine engine = BattleEngine.getInstance();
+
+        System.out.println("=== BATTLE 1 ===");
+        engine.battle(hero1, enemy1);
+
+        System.out.println("\n=== BATTLE 2 ===");
+        engine.battle(hero2, enemy2);
+
+        System.out.println("\n=== BATTLE 3 ===");
+        engine.battle(hero3, enemy3);
     }
 }

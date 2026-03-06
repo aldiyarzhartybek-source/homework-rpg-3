@@ -1,11 +1,7 @@
 package com.narxoz.rpg.battle;
 
-import java.util.List;
-import java.util.Random;
-
-public final class BattleEngine {
+public class BattleEngine {
     private static BattleEngine instance;
-    private Random random = new Random(1L);
 
     private BattleEngine() {
     }
@@ -17,22 +13,41 @@ public final class BattleEngine {
         return instance;
     }
 
-    public BattleEngine setRandomSeed(long seed) {
-        this.random = new Random(seed);
-        return this;
-    }
+    public void battle(Combatant first, Combatant second) {
+        System.out.println(first.getName() + " vs " + second.getName());
 
-    public void reset() {
-        // TODO: reset any battle state if you add it
-    }
+        if (!first.isAlive() || !second.isAlive()) {
+            System.out.println("Battle cannot start because one of the combatants is already defeated.");
+            return;
+        }
 
-    public EncounterResult runEncounter(List<Combatant> teamA, List<Combatant> teamB) {
-        // TODO: validate inputs and run round-based battle
-        // TODO: use random if you add critical hits or target selection
-        EncounterResult result = new EncounterResult();
-        result.setWinner("TBD");
-        result.setRounds(0);
-        result.addLog("TODO: implement battle simulation");
-        return result;
+        int round = 1;
+
+        while (first.isAlive() && second.isAlive()) {
+            System.out.println("Round " + round);
+
+            second.takeDamage(first.getAttackPower());
+            System.out.println(first.getName() + " attacks " + second.getName()
+                    + " for " + first.getAttackPower() + " damage");
+
+            if (!second.isAlive()) {
+                System.out.println(second.getName() + " has been defeated!");
+                System.out.println("Winner: " + first.getName());
+                break;
+            }
+
+            first.takeDamage(second.getAttackPower());
+            System.out.println(second.getName() + " attacks " + first.getName()
+                    + " for " + second.getAttackPower() + " damage");
+
+            if (!first.isAlive()) {
+                System.out.println(first.getName() + " has been defeated!");
+                System.out.println("Winner: " + second.getName());
+                break;
+            }
+
+            round++;
+            System.out.println();
+        }
     }
 }
